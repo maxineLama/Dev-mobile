@@ -80,15 +80,14 @@ When launching the app, you will have access to three different tabs named "Obje
 <!-- Members -->
 ## Members
 
-LAMA Maxine - [@maxineLama]((https://github.com/maxineLama) 
+LAMA Maxine - [@maxineLama](https://github.com/maxineLama) 
 <br>
-MEZROUI Marwan - [@iTrixPro]([(https://github.com/iTrixPro)]
-
+MEZROUI Marwan - [@iTrixPro](https://github.com/iTrixPro)
 
 <p align="right"><a href="#readme-top">⇑</a></p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
+[React.js]: https://img.shields.io/badge/React_native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactnative.dev
 [Expo.js]: https://img.shields.io/badge/expo-000000?style=for-the-badge&logo=expo&logoColor=white
 [Expo-url]: https://expo.dev
