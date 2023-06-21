@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, Button, ScrollView, Modal, TouchableOpacity } from 'react-native';
+import { Text, View, TextInput, Modal, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { MealPlanContext } from './MealPlanContext';
+import { MealPlanContext } from '../contexts/MealPlanContext';
 import { useContext } from 'react';
-import { useIsFocused } from '@react-navigation/native';
+import { CONSTANTS } from '../redux/Constant';
+import { COLORS } from '../styles/color';
 
 const BddNourriture = () => {
-  const isFocused = useIsFocused();  
   const { mealPlan, setMealPlan, getInitialMealPlan } = useContext(MealPlanContext);
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
   const [foodData, setFoodData] = useState(null);
   const [selectedMeal, setSelectedMeal] = useState('Breakfast');
   const [selectedFood, setSelectedFood] = useState(null);
   const [modalMealVisible, setModalMealVisible] = useState(false);
   const [modalDayVisible, setModalDayVisible] = useState(false);
-  const [selectedDay, setSelectedDay] = useState('Lundi');
-  const currentDay = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  const [selectedDay, setSelectedDay] = useState(CONSTANTS.LUNDI);
 
   const handleSearchChange = (text) => {
     setSearchText(text);
@@ -24,13 +22,10 @@ const BddNourriture = () => {
 
   const handleSearchSubmit = () => {
     // Requête à l'API
-    const apiKey = 'b94da879216938c07bc512e903464e1a';
-    const appId = '1bab02c0';
-    const endpoint = 'https://api.edamam.com/api/food-database/v2/parser';
     const query = encodeURIComponent(searchText);
 
     // Construire l'URL avec les paramètres de la requête
-    const url = `${endpoint}?ingr=${query}&app_id=${appId}&app_key=${apiKey}`;
+    const url = `${CONSTANTS.API_URL}?ingr=${query}&app_id=${CONSTANTS.API_ID}&app_key=${CONSTANTS.API_KEY}`;
 
     // Effectuer la requête GET à l'API
     fetch(url)
@@ -47,16 +42,11 @@ const BddNourriture = () => {
           }
 
           if (foundFood) {
-            console.log('Nom de l\'aliment :', foundFood.label);
-            console.log('Teneur en calories :', foundFood.nutrients.ENERC_KCAL);
-            console.log('Autres informations nutritionnelles :', foundFood.nutrients);
             setFoodData([foundFood]);
           } else {
-            console.log('Aucun aliment trouvé');
             setFoodData(null);
           }
         } else {
-          console.log('Aucun aliment trouvé');
           setFoodData(null);
         }
       })
@@ -66,10 +56,8 @@ const BddNourriture = () => {
   };
 
   useEffect(() => {
-    setSearchText('');
-    setFoodData('');
     console.log("Meal Plan bdd (updated): ", mealPlan);
-  }, [isFocused]);
+  }, [mealPlan]);
 
   const updateMealPlan = (selectedMeal,selectedDay) => {
   setMealPlan((prevMealPlan) => {
@@ -94,10 +82,7 @@ const BddNourriture = () => {
       updateMealPlan(selectedMeal,selectedDay);
       setModalMealVisible(false);
     }else{
-      console.log("vide");
       setModalMealVisible(false);
-      console.log("vide meal", selectedMeal);
-      console.log("vide day", selectedDay);
     }
   };
 
@@ -125,7 +110,7 @@ const BddNourriture = () => {
                 ))}
               </View>
               <TouchableOpacity onPress={() => handleAddToMeal(food)} style={styles.btn}>
-                <Text style={styles.textAdd}> Ajouter </Text>
+                <Text style={styles.textAdd}> {CONSTANTS.AJOUTER} </Text>
               </TouchableOpacity>
             </View>
           ))}
@@ -139,21 +124,21 @@ const BddNourriture = () => {
             <Picker
               style={styles.picker}
               selectedValue={selectedDay}
-              onValueChange={(itemValue) => { setSelectedDay(itemValue); console.log('Selected day:', itemValue); }}
+              onValueChange={(itemValue) => { setSelectedDay(itemValue); }}
             >
-              <Picker.Item label="Lundi" value="Lundi" />
-              <Picker.Item label="Mardi" value="Mardi" />
-              <Picker.Item label="Mercredi" value="Mercredi" />
-              <Picker.Item label="Jeudi" value="Jeudi" />
-              <Picker.Item label="Vendredi" value="Vendredi" />
-              <Picker.Item label="Samedi" value="Samedi" />
-              <Picker.Item label="Dimanche" value="Dimanche" />
+              <Picker.Item label={CONSTANTS.LUNDI} value={CONSTANTS.LUNDI} />
+              <Picker.Item label={CONSTANTS.MARDI} value={CONSTANTS.MARDI}  />
+              <Picker.Item label={CONSTANTS.MERCREDI}  value={CONSTANTS.MERCREDI} />
+              <Picker.Item label={CONSTANTS.JEUDI} value={CONSTANTS.JEUDI} />
+              <Picker.Item label={CONSTANTS.VENDREDI} value={CONSTANTS.VENDREDI} />
+              <Picker.Item label={CONSTANTS.SAMEDI} value={CONSTANTS.SAMEDI} />
+              <Picker.Item label={CONSTANTS.DIMANCHE} value={CONSTANTS.DIMANCHE} />
             </Picker>
             <TouchableOpacity onPress={() => { setModalDayVisible(false); setModalMealVisible(true);  }} style={styles.btnConfirm}>
-              <Text> Confirmer </Text>
+              <Text> {CONSTANTS.CONFIRM} </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setModalDayVisible(false)} style={styles.btnCancel}> 
-              <Text> Annuler </Text>
+              <Text> {CONSTANTS.CANCEL} </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -166,18 +151,18 @@ const BddNourriture = () => {
             <Picker
               style={styles.picker}
               selectedValue={selectedMeal}
-              onValueChange={(itemValue) => { setSelectedMeal(itemValue); console.log('Selected item:', itemValue); }}
+              onValueChange={(itemValue) => { setSelectedMeal(itemValue); }}
             >
-              <Picker.Item label="Petit-déjeuner" value="Breakfast" />
-              <Picker.Item label="Déjeuner" value="Lunch" />
-              <Picker.Item label="Collation" value="Snack" />
-              <Picker.Item label="Dîner" value="Dinner" />
+              <Picker.Item label={CONSTANTS.BREAKFAST_LABEL} value={CONSTANTS.BREAKFAST_VALUE} />
+              <Picker.Item label={CONSTANTS.LUNCH_LABEL} value={CONSTANTS.LUNCH_VALUE}  />
+              <Picker.Item label={CONSTANTS.SNACK_LABEL} value={CONSTANTS.SNACK_VALUE}  />
+              <Picker.Item label={CONSTANTS.DINER_LABEL} value={CONSTANTS.DINER_VALUE} />
             </Picker>
             <TouchableOpacity onPress={() => { handleConfirmMeal()  }} style={styles.btnConfirm}>
-              <Text> Confirmer </Text>
+              <Text> {CONSTANTS.CONFIRM} </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => setModalMealVisible(false)} style={styles.btnCancel}> 
-              <Text> Annuler </Text>
+              <Text> {CONSTANTS.CANCEL} </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -190,7 +175,7 @@ const styles = {
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
   },
   heading: {
     fontSize: 24,
@@ -199,7 +184,7 @@ const styles = {
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: COLORS.GRAY,
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
@@ -213,7 +198,7 @@ const styles = {
     marginBottom: 15,
     padding: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: COLORS.LIGHT_GRAY,
     borderRadius: 4
   },
   foodItemLabel: {
@@ -235,10 +220,10 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: COLORS.BLACK,
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     padding: 20,
     borderRadius: 10,
   },
@@ -257,7 +242,7 @@ const styles = {
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: '#ef233c',
+    backgroundColor: COLORS.MAIN,
     width: '70%',
     alignSelf: 'center',
     marginBottom: 20,
@@ -267,7 +252,7 @@ const styles = {
     justifyContent: 'center',
     height: 50,
     borderRadius: 4,
-    backgroundColor: '#80ed99',
+    backgroundColor: COLORS.LIGHT_GREEN,
     marginBottom: 5,
   },
   btnCancel: {
@@ -275,21 +260,21 @@ const styles = {
     justifyContent: 'center',
     height: 50,
     borderRadius: 4,
-    backgroundColor: '#ea3546',
+    backgroundColor: COLORS.DARK_RED,
   },
   text: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'white',
+    color: COLORS.WHITE,
   },
   textAdd: {
     fontSize: 16,
     lineHeight: 15,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'white',
+    color: COLORS.WHITE,
   },
 };
 

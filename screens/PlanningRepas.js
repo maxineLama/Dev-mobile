@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Modal, Pressable } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { MealPlanContext } from './MealPlanContext';
+import { MealPlanContext } from '../contexts/MealPlanContext';
+import { CONSTANTS } from '../redux/Constant';
+import { COLORS } from '../styles/color';
 
 const PlanningRepas = () => {
   const { mealPlan, setMealPlan, getInitialMealPlan } = useContext(MealPlanContext);
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const loadMealPlan = async () => {
@@ -17,7 +18,6 @@ const PlanningRepas = () => {
       } catch (error) {
         console.log(error);
       }
-      setLoaded(true);
     };
     loadMealPlan();
   }, [setMealPlan]);
@@ -125,10 +125,10 @@ const PlanningRepas = () => {
               <Text>Voulez-vous supprimer ce plat ?</Text>
               <View style={styles.modalButtons}>
                 <Pressable style={styles.btnCancel} onPress={closeModal}>
-                  <Text style={styles.text}>Non</Text>
+                  <Text style={styles.text}>{CONSTANTS.NON}</Text>
                 </Pressable>
                 <Pressable style={styles.btnConfirm} onPress={() => { handleDeleteFood(dayOfWeek, mealName, food); closeModal(); }}>
-                  <Text style={styles.text}>Oui</Text>
+                  <Text style={styles.text}>{CONSTANTS.OUI}</Text>
                 </Pressable>
               </View>
             </View>
@@ -146,14 +146,14 @@ const styles = {
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
   },
   dayContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     padding: 10,
     marginBottom: 20,
     borderRadius: 3, 
-    shadowColor: '#171717',
+    shadowColor: COLORS.BLACK2,
     shadowOffset: {width: -2, height: 4},
     shadowOpacity: 0.2,
     shadowRadius: 3,
@@ -163,7 +163,7 @@ const styles = {
     alignItems: 'center',
     fontSize: 20,
     fontWeight: 'bold',
-    color: 'grey',
+    color: COLORS.GRAY
   },
   mealContainer: {
     marginBottom: 20,
@@ -206,10 +206,10 @@ const styles = {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: COLORS.BLACK,
   },
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: COLORS.WHITE,
     padding: 20,
     borderRadius: 10,
   },
@@ -224,21 +224,21 @@ const styles = {
     marginRight: 5,
     width: 50,
     borderRadius: 4,
-    backgroundColor: '#ea3546',
+    backgroundColor: COLORS.DARK_RED,
   },
   btnConfirm: {
     alignItems: 'center',
     justifyContent: 'center',
     width: 50,
     borderRadius: 4,
-    backgroundColor: '#80ed99',
+    backgroundColor: COLORS.LIGHT_GREEN,
   },
   text: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'white',
+    color: COLORS.WHITE,
   },
   boldText: {
     fontWeight: 'bold',

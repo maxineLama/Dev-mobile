@@ -1,9 +1,10 @@
 import React, { createContext, useState } from 'react';
+import { CONSTANTS } from '../redux/Constant';
 
 export const MealPlanContext = createContext();
 
 export const getInitialMealPlan = () => {
-  const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+  const daysOfWeek = [CONSTANTS.LUNDI, CONSTANTS.MARDI, CONSTANTS.MERCREDI, CONSTANTS.JEUDI, CONSTANTS.VENDREDI, CONSTANTS.SAMEDI, CONSTANTS.DIMANCHE];
   const initialMealPlan = {};
   for (let day of daysOfWeek) {
     initialMealPlan[day] = {

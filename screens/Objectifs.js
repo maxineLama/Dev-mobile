@@ -1,14 +1,15 @@
-import { Text, View, TextInput, Button,TouchableOpacity, Keyboard, ScrollView} from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, Keyboard, ScrollView} from 'react-native';
 import { useState , useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
-
+import { CONSTANTS } from '../redux/Constant';
+import { COLORS } from '../styles/color';
 
 function calculateBMR(age, gender, weight, height) {
   let bmr = 0;
 
-  if (gender === 'homme') {
+  if (gender === CONSTANTS.HOMME) {
     bmr = 88.362 + 13.397 * weight + 4.799 * height - 5.677 * age;
-  } else if (gender === 'femme') {
+  } else if (gender === CONSTANTS.FEMME) {
     bmr = 447.593 + 9.247 * weight + 3.098 * height - 4.330 * age;
   }
 
@@ -19,19 +20,19 @@ function calculateTotalCalories(bmr, activityLevel) {
   let totalCalories = 0;
 
   switch (activityLevel) {
-    case 'sedentaire':
+    case CONSTANTS.SEDENTAIRE:
       totalCalories = bmr * 1.2;
       break;
-    case 'exercice_leger':
+    case CONSTANTS.EXERCICE_LEGER:
       totalCalories = bmr * 1.375;
       break;
-    case 'exercice_moderé':
+    case CONSTANTS.EXERCICE_MODERE:
       totalCalories = bmr * 1.55;
       break;
-    case 'exercice_intense':
+    case CONSTANTS.EXERCICE_INTENSE:
       totalCalories = bmr * 1.725;
       break;
-    case 'extra_actif':
+    case CONSTANTS.EXTRA_ACTIF:
       totalCalories = bmr * 1.9;
       break;
     default:
@@ -45,10 +46,10 @@ function adjustTotalCalories(totalCalories, healthGoal) {
   let adjustedCalories = totalCalories;
 
   switch (healthGoal) {
-    case 'perte_poids':
+    case CONSTANTS.PERTE_POIDS:
       adjustedCalories -= 500;
       break;
-    case 'gain_poids':
+    case CONSTANTS.GAIN_POIDS:
       adjustedCalories += 500;
       break;
     default:
@@ -167,8 +168,8 @@ const ObjectifsForm =()=>{
               style={styles.formPicker}
               itemStyle={styles.formPickerItem}
               >
-                <Picker.Item label="Femme" value="femme" />
-                <Picker.Item label="Homme" value="homme" />
+                <Picker.Item label={CONSTANTS.FEMME_LABEL} value={CONSTANTS.FEMME} />
+                <Picker.Item label={CONSTANTS.HOMME_LABEL} value={CONSTANTS.HOMME} />
               </Picker>
             </View>
             
@@ -196,11 +197,11 @@ const ObjectifsForm =()=>{
               style={styles.formPicker}
               itemStyle={styles.formPickerItem}
               >
-                <Picker.Item label="Sédentaire" value="sedentaire" />
-                <Picker.Item label="Exercice léger" value="exercice_leger" />
-                <Picker.Item label="Exercice modéré" value="exercice_moderé" />
-                <Picker.Item label="Exercice intense" value="exercice_intense" />
-                <Picker.Item label="Extra actif" value="extra_actif" />
+                <Picker.Item label={CONSTANTS.SEDENTAIRE_LABEL}  value={CONSTANTS.SEDENTAIRE} />
+                <Picker.Item label={CONSTANTS.EXERCICE_LEGER_LABEL} value={CONSTANTS.EXERCICE_LEGER} />
+                <Picker.Item label={CONSTANTS.EXERCICE_MODERE_LABEL} value={CONSTANTS.EXERCICE_MODERE} />
+                <Picker.Item label={CONSTANTS.EXERCICE_INTENSE_LABEL} value={CONSTANTS.EXERCICE_INTENSE} />
+                <Picker.Item label={CONSTANTS.EXTRA_ACTIF_LABEL} value={CONSTANTS.EXTRA_ACTIF} />
               </Picker>
             </View>
 
@@ -234,7 +235,7 @@ const ObjectifsForm =()=>{
             
 
             <TouchableOpacity onPress={handleFormSubmit} disabled={!isFormValid} style={styles.btn}>
-              <Text style={styles.text}> Soumettre </Text>
+              <Text style={styles.text}> {CONSTANTS.SOUMETTRE} </Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -295,7 +296,7 @@ const styles = {
   },
 
   formInput: {
-    borderColor: 'gray',
+    borderColor: COLORS.GRAY,
     borderWidth: 1,
     borderRadius: 4,
     width: '70%',
@@ -305,7 +306,7 @@ const styles = {
 
   formPicker: {
     borderWidth: 1, 
-    borderColor: 'transparent', 
+    borderColor: COLORS.TRANSPARENT, 
     marginBottom: 10,
     borderRadius: 5,
     width: '50%',
@@ -323,14 +324,14 @@ const styles = {
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: '#ef233c',
+    backgroundColor: COLORS.MAIN,
     width: '70%',
     alignSelf: 'center',
     marginBottom: 20,
   },
 
   text: {
-    color: 'white',
+    color: COLORS.WHITE,
   },
 
   resultContainer: {

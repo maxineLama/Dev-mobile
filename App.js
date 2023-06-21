@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import BddNourriture from './BddNourriture';
-import ObjectifsForm from './Objectifs';
-import PlanningRepas from './PlanningRepas';
-import { MealPlanProvider } from './MealPlanContext';
+import BddNourriture from './screens/BddNourriture';
+import ObjectifsForm from './screens/Objectifs';
+import PlanningRepas from './screens/PlanningRepas';
+import { MealPlanProvider } from './contexts/MealPlanContext';
 import Icon from "react-native-vector-icons/FontAwesome";
+import { COLORS } from './styles/color';
 
 const Tab = createBottomTabNavigator();
 
@@ -33,10 +34,10 @@ export default function App() {
                 return <Icon name={iconName} size={24} color={color}/>
 
             },
-            tabBarActiveTintColor: '#ef233c',
-            tabBarInactiveTintColor: 'gray',
-            activeTintColor: 'red',
-            inactiveTintColor: 'green',
+            tabBarActiveTintColor: COLORS.MAIN,
+            tabBarInactiveTintColor: COLORS.GRAY,
+            activeTintColor: COLORS.RED,
+            inactiveTintColor: COLORS.GREEN,
         })}
       >
           <Tab.Screen name="Objectifs" component={ObjectifsForm} />
