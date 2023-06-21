@@ -1,11 +1,87 @@
-# Sample Snack app
+<a name="readme-top"></a>
 
-Open the `App.js` file to start writing some code. You can preview the changes directly on your phone or tablet by scanning the **QR code** or use the iOS or Android emulators. When you're done, click **Save** and share the link!
+<!-- headeer-->
+<div align="center">
+  <h3 align="center">MealManager</h3>
 
-When you're ready to see everything that Expo provides (or if you want to use your own editor) you can **Download** your project and use it with [expo-cli](https://docs.expo.dev/get-started/installation/#expo-cli)).
+  <p align="center">
+    App allowing to plan your meal properly !
+  </p>
+</div>
 
-All projects created in Snack are publicly available, so you can easily share the link to this project via link, or embed it on a web page with the `<>` button.
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#members">Members</a></li>
+  </ol>
+</details>
 
-If you're having problems, you can tweet to us [@expo](https://twitter.com/expo) or ask in our [forums](https://forums.expo.dev/c/expo-dev-tools/61) or [Discord](https://chat.expo.dev/).
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
+Calories Counter and Meal Planner application allowing user to set his health goals, choose items from a food database to track caloric intake, and plan meals accordingly.
+
+<p align="right"><a href="#readme-top">⇑</a></p>
+
+### Built With
+
+* [![React][React.js]][React-url]
+
+<p align="right"><a href="#readme-top">⇑</a></p>
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/maxineLama/Dev-mobile
+   ```
+2. Install NPM packages
+   ```sh
+   npm install --force
+   ```
+3. Launch the app
+   ```sh
+   expo start
+   ```
+
+<p align="right"><a href="#readme-top">⇑</a></p>
+
+<!-- Usage -->
+## Usage
+
+When launching the app, you will have access to three different tabs named "Objectifs", "Aliments", "Programme".
+
+1. "Objectifs" => After filling the form with some personal details/health goals, you will get the health goals you need to follow to achive your goals.
+
+2. "Aliments" => Search bar allowing you to get info about aliment thanks to a database. After looking into it, you can add that aliment into your meal plan. For instance, you can look up for the aliment named "apple", you will get all information about it and be able to add it.
+
+3. "Programme" => Meal plan for each day. If you added a wrong aliment, you can remove it direclty for a specific day thanks to the red cross.
+
+<p align="right"><a href="#readme-top">⇑</a></p>
+
+<!-- Members -->
+## Members
+
+LAMA Maxine - [@maxineLama]((https://github.com/maxineLama) 
+<br>
+MEZROUI Marwan - [@iTrixPro]([(https://github.com/iTrixPro)]
+
+
+<p align="right"><a href="#readme-top">⇑</a></p>
