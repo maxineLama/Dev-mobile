@@ -33,7 +33,7 @@ export const CONSTANTS = {
     EXERCICE_INTENSE : 'exercice_intense',
     EXERCICE_INTENSE_LABEL : 'Exercice intense',
     EXTRA_ACTIF : 'extra_actif',
-    EXTRA_ACTIF_LABEL : 'extra_actif',
+    EXTRA_ACTIF_LABEL : 'Extra actif',
     PERTE_POIDS : 'perte_poids',
     GAIN_POIDS : 'gain_poids',
     SOUMETTRE : 'Soumettre',
