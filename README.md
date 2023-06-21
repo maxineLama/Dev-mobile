@@ -40,6 +40,7 @@ Calories Counter and Meal Planner application allowing user to set his health go
 ### Built With
 
 * [![React][React.js]][React-url]
+* [![Expo][Expo.js]][Expo-url]
 
 <p align="right"><a href="#readme-top">⇑</a></p>
 
@@ -85,3 +86,9 @@ MEZROUI Marwan - [@iTrixPro]([(https://github.com/iTrixPro)]
 
 
 <p align="right"><a href="#readme-top">⇑</a></p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Expo.js]: https://img.shields.io/badge/expo-000000?style=for-the-badge&logo=expo&logoColor=white
+[Expo-url]: https://expo.dev
