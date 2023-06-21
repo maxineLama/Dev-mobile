@@ -2,8 +2,8 @@ import React, { createContext, useState } from 'react';
 
 export const MealPlanContext = createContext();
 
-const getInitialMealPlan = () => {
-  const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+export const getInitialMealPlan = () => {
+  const daysOfWeek = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
   const initialMealPlan = {};
   for (let day of daysOfWeek) {
     initialMealPlan[day] = {
@@ -18,7 +18,7 @@ const getInitialMealPlan = () => {
 
 export const MealPlanProvider = ({ children }) => {
   const [mealPlan, setMealPlan] = useState(getInitialMealPlan());
-
+  
   return (
     <MealPlanContext.Provider value={{ mealPlan, setMealPlan }}>
       {children}

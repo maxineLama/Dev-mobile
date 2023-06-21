@@ -3,19 +3,6 @@ import { useState , useEffect } from 'react';
 import { Picker } from '@react-native-picker/picker';
 
 
-function CalorieResult({ adjustedCalories }) {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-        Votre apport calorique quotidien est de :
-      </Text>
-      <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 10 }}>
-        {adjustedCalories} calories
-      </Text>
-    </View>
-  );
-}
-
 function calculateBMR(age, gender, weight, height) {
   let bmr = 0;
 
@@ -27,6 +14,7 @@ function calculateBMR(age, gender, weight, height) {
 
   return bmr;
 }
+
 function calculateTotalCalories(bmr, activityLevel) {
   let totalCalories = 0;
 
@@ -67,8 +55,9 @@ function adjustTotalCalories(totalCalories, healthGoal) {
       break;
   }
 
-  return adjustedCalories;
+  return adjustedCalories.toFixed(2);;
 }
+
 // Premier onglet : Objectifs de santé
 const ObjectifsForm =()=>{
   const [age, setAge] = useState('');
@@ -107,9 +96,11 @@ const ObjectifsForm =()=>{
     }
     setShowForm(false);
   };
+
   const handleEditForm = () => {
     setShowForm(true); // Afficher à nouveau le formulaire lors de l'édition
   };
+
   const handleInputChange = () => {
     // Vérification de la validité du formulaire
     
@@ -127,90 +118,238 @@ const ObjectifsForm =()=>{
     }
   };
 
-  return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ flex: 1, paddingBottom: 20, paddingTop: 10 }}>Calculez votre apport calorique journalier</Text>
+  function CalorieResult({ adjustedCalories }) {
+    return (
+      <View style={styles.resultContainer}>
+        <Text style={styles.resultText}>
+          Votre apport calorique quotidien est :
+        </Text>
+        <Text style={styles.resultSubText}>
+          {adjustedCalories} calories
+        </Text>
+        <TouchableOpacity onPress={handleEditForm} style={styles.btn}>
+            <Text style={styles.text}> Modifier le formulaire </Text>
+        </TouchableOpacity>
       </View>
-      {showForm && (
-        <TouchableOpacity onPress={Keyboard.dismiss}>
-          <View style={{ paddingHorizontal: 20 }}>
-            <Text> Age </Text>
-            <TextInput
-              placeholder="Age"
-              value={age}
-              onChangeText={setAge}
-              keyboardType="numeric"
-              onBlur={handleInputChange}
-              style={{ borderWidth: 1, borderColor: 'gray', marginBottom: 10, padding: 5 }}
-            />
+    );
+  }
 
-            <Picker
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+
+      <View style={showForm ? styles.headerContainer : styles.hidden}>
+        <Text style={styles.textHeader}>Calculez votre apport calorique journalier</Text>
+      </View>
+
+      <View style={showForm ? styles.form : styles.hidden}>
+        <TouchableOpacity onPress={Keyboard.dismiss}>
+          <View style={styles.formArea}>
+            <View style={styles.formControl}>
+              <Text style={styles.formText}> Age : </Text>
+
+              <TextInput
+                placeholder="Age"
+                value={age}
+                onChangeText={setAge}
+                keyboardType="numeric"
+                onBlur={handleInputChange}
+                style={styles.formInput}
+              />
+            </View>
+
+            <View style={styles.formControl}>
+              <Text style={styles.formText}> Genre : </Text>
+
+              <Picker
               selectedValue={gender}
               onValueChange={(itemValue) => setGender(itemValue)}
               onBlur={handleInputChange}
-              style={{ borderWidth: 1, borderColor: 'gray', marginBottom: 10 }}
-            >
-              <Picker.Item label="Genre" value="" />
-              <Picker.Item label="Femme" value="femme" />
-              <Picker.Item label="Homme" value="homme" />
-            </Picker>
-            <Text> Taille </Text>
-            <TextInput
+              style={styles.formPicker}
+              itemStyle={styles.formPickerItem}
+              >
+                <Picker.Item label="Femme" value="femme" />
+                <Picker.Item label="Homme" value="homme" />
+              </Picker>
+            </View>
+            
+
+            <View style={styles.formControl}>
+              <Text style={styles.formText}> Taille : </Text>
+
+              <TextInput
               placeholder="Hauteur"
               value={height}
               onChangeText={setHeight}
               onBlur={handleInputChange}
               keyboardType="numeric"
-              style={{ borderWidth: 1, borderColor: 'gray', marginBottom: 10, padding: 5 }}
-            />
-            <Text> Poids </Text>
-            <TextInput
-              placeholder="Poids"
-              value={weight}
-              onChangeText={setWeight}
-              keyboardType="numeric"
-              style={{ borderWidth: 1, borderColor: 'gray', marginBottom: 10, padding: 5 }}
-            />
+              style={styles.formInput}
+              />
+            </View>
 
-            <Picker
+            <View style={styles.formControl}>
+              <Text style={styles.formText}> Niveau d'activité : </Text>
+
+              <Picker
               selectedValue={activityLevel}
               onValueChange={(itemValue) => setActivityLevel(itemValue)}
               onBlur={handleInputChange}
-              style={{ borderWidth: 1, borderColor: 'gray', marginBottom: 10 }}
-            >
-              <Picker.Item label="Niveau d'activité" value="" />
-              <Picker.Item label="Sédentaire" value="sedentaire" />
-              <Picker.Item label="Exercice léger" value="exercice_leger" />
-              <Picker.Item label="Exercice modéré" value="exercice_moderé" />
-              <Picker.Item label="Exercice intense" value="exercice_intense" />
-              <Picker.Item label="Extra actif" value="extra_actif" />
-            </Picker>
+              style={styles.formPicker}
+              itemStyle={styles.formPickerItem}
+              >
+                <Picker.Item label="Sédentaire" value="sedentaire" />
+                <Picker.Item label="Exercice léger" value="exercice_leger" />
+                <Picker.Item label="Exercice modéré" value="exercice_moderé" />
+                <Picker.Item label="Exercice intense" value="exercice_intense" />
+                <Picker.Item label="Extra actif" value="extra_actif" />
+              </Picker>
+            </View>
 
-            <Picker
+            <View style={styles.formControl}>
+              <Text style={styles.formText}> Poids : </Text>
+              <TextInput
+                placeholder="Poids"
+                value={weight}
+                onChangeText={setWeight}
+                keyboardType="numeric"
+                style={styles.formInput}
+              />
+            </View>
+
+            <View style={styles.formControl}>
+              <Text style={styles.formText}> Objectif de santé : </Text>
+
+              <Picker
               selectedValue={healthGoal}
               onValueChange={(itemValue) => setHealthGoal(itemValue)}
               onBlur={handleInputChange}
-              style={{ borderWidth: 1, borderColor: 'gray', marginBottom: 10 }}
-            >
-              <Picker.Item label="Objectif de santé" value="" />
-              <Picker.Item label="Perte de poids" value="perte_poids" />
-              <Picker.Item label="Maintien du poids" value="maintien_poids" />
-              <Picker.Item label="Gain de poids" value="gain_poids" />
-            </Picker>
+              style={styles.formPicker}
+              itemStyle={styles.formPickerItem}
+              >
+                <Picker.Item label="Perte de poids" value="perte_poids" />
+                <Picker.Item label="Maintien du poids" value="maintien_poids" />
+                <Picker.Item label="Gain de poids" value="gain_poids" />
+              </Picker>
+            </View>
+            
+            
 
-            <Button title="Soumettre" onPress={handleFormSubmit} disabled={!isFormValid} />
+            <TouchableOpacity onPress={handleFormSubmit} disabled={!isFormValid} style={styles.btn}>
+              <Text style={styles.text}> Soumettre </Text>
+            </TouchableOpacity>
           </View>
         </TouchableOpacity>
-      )}
-      {!showForm && (
-        <View style={{ paddingHorizontal: 20 }}>
+      </View>
+        <View style={!showForm ? styles.result : styles.hidden}>
           <CalorieResult adjustedCalories={adjustedCalories} />
-          <Button title="Modifier le formulaire" onPress={handleEditForm} />
         </View>
-      )}
     </ScrollView>
   );
 };
+
+const styles = {
+  container : {
+    flexGrow: 1
+  },
+
+  hidden: {
+    display: 'none',
+  },
+
+  headerContainer : {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+
+  textHeader: {
+    flex: 1,
+    paddingBottom: 20, 
+    paddingTop: 10
+  },
+
+  result: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+
+  form: {
+    height: '100%',
+    marginTop: 20,
+    top: 0,
+  },
+
+  formArea : {
+    paddingHorizontal: 20
+  },
+
+  formControl : {
+    flex: 1, 
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10
+  },
+
+  formText : {
+    fontWeight: 'bold', 
+    marginRight: 10
+  },
+
+  formInput: {
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 4,
+    width: '70%',
+    height: 23,
+    padding: 5
+  },
+
+  formPicker: {
+    borderWidth: 1, 
+    borderColor: 'transparent', 
+    marginBottom: 10,
+    borderRadius: 5,
+    width: '50%',
+  },
+
+  formPickerItem: {
+    height: 32,
+    fontSize: 12,
+  },
+
+  btn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#ef233c',
+    width: '70%',
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
+
+  text: {
+    color: 'white',
+  },
+
+  resultContainer: {
+    flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  },
+
+  resultText: {
+    fontSize: 18, 
+    fontWeight: 'bold'
+  },
+
+  resultSubText: {
+    fontSize: 24, 
+    fontWeight: 'bold', 
+    marginTop: 10,
+    marginBottom: 10 
+  }
+} 
 export default ObjectifsForm;
 

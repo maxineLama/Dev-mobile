@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Modal, Pressable } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MealPlanContext } from './MealPlanContext';
 
 const PlanningRepas = () => {
-  const { mealPlan, setMealPlan } = useContext(MealPlanContext);
+  const { mealPlan, setMealPlan, getInitialMealPlan } = useContext(MealPlanContext);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -72,10 +72,15 @@ const PlanningRepas = () => {
     return totalCalories;
   };
 
+  let mealPlanIt = { ...mealPlan };
+  if (Object.keys(mealPlan).length === 0) { // gerer le cas ou on ne peux pas itérer sur mealPlan car vide.
+            mealPlanIt = getInitialMealPlan(); 
+          }
+
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        {Object.entries(mealPlan).map(([day, meals]) => (
+        {Object.entries(mealPlanIt).map(([day, meals]) => (
           <View key={day} style={styles.dayContainer}>
             <Text style={styles.dayTitle}>{day}</Text>
             {Object.entries(meals).map(([meal, foods]) => (
@@ -85,14 +90,15 @@ const PlanningRepas = () => {
                   {Array.isArray(foods) && foods.map((food) => (
                     <View key={food.label} style={styles.foodContainer}>
                       <View style={styles.foodDetails}>
-                        <Text  style={styles.foodLabel} >{food.label}</Text>
-                        <Text>{food.nutrients.ENERC_KCAL} kcal</Text>
+                        <Text  style={styles.foodLabel} >
+                          ➤ {food.label} - {food.nutrients.ENERC_KCAL} kcal
+                        </Text>
+                        <SupprimerPlat dayOfWeek={day} mealName={meal} food={food} handleDeleteFood={handleDeleteFood} />
                       </View>
-                      <SupprimerPlat dayOfWeek={day} mealName={meal} food={food} handleDeleteFood={handleDeleteFood} />
                     </View>
                   ))}
                 </View>
-                <Text style={styles.totalCaloriesText}>Total calories: {calculateTotalCalories(foods)}</Text>
+                <Text style={styles.totalCaloriesText}>Total calories : <Text style={styles.boldText}>{calculateTotalCalories(foods)}</Text> kcal</Text>
               </View>
             ))}
           </View>
@@ -118,11 +124,11 @@ const PlanningRepas = () => {
             <View style={styles.modalContent}>
               <Text>Voulez-vous supprimer ce plat ?</Text>
               <View style={styles.modalButtons}>
-                <Pressable style={styles.modalButton} onPress={closeModal}>
-                  <Text style={styles.modalButtonText}>Non</Text>
+                <Pressable style={styles.btnCancel} onPress={closeModal}>
+                  <Text style={styles.text}>Non</Text>
                 </Pressable>
-                <Pressable style={styles.modalButton} onPress={() => { handleDeleteFood(dayOfWeek, mealName, food); closeModal(); }}>
-                  <Text style={styles.modalButtonText}>Oui</Text>
+                <Pressable style={styles.btnConfirm} onPress={() => { handleDeleteFood(dayOfWeek, mealName, food); closeModal(); }}>
+                  <Text style={styles.text}>Oui</Text>
                 </Pressable>
               </View>
             </View>
@@ -143,10 +149,14 @@ const styles = {
     backgroundColor: '#fff',
   },
   dayContainer: {
+    backgroundColor: '#fff',
+    padding: 10,
     marginBottom: 20,
-    borderBottomWidth: 1, 
-    borderBottomColor: '#000', 
-    paddingBottom: 10, 
+    borderRadius: 3, 
+    shadowColor: '#171717',
+    shadowOffset: {width: -2, height: 4},
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   dayTitle: {
     marginBottom: 20,
@@ -175,7 +185,7 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 5,
-    
+    alignSelf: 'center',
   },
    foodLabel: {
     marginRight: 10, 
@@ -205,14 +215,32 @@ const styles = {
   },
   modalButtons: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     marginTop: 20,
   },
-  modalButton: {
-    marginHorizontal: 10,
-    paddingVertical: 10,
+  btnCancel: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 5,
+    width: 50,
+    borderRadius: 4,
+    backgroundColor: '#ea3546',
   },
-  modalButtonText: {
+  btnConfirm: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 50,
+    borderRadius: 4,
+    backgroundColor: '#80ed99',
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+  boldText: {
     fontWeight: 'bold',
   },
 };
