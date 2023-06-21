@@ -53,11 +53,15 @@ Calories Counter and Meal Planner application allowing user to set his health go
    ```sh
    git clone https://github.com/maxineLama/Dev-mobile
    ```
-2. Install NPM packages
+2. Go into the correct directory
+ ```sh
+ cd Dev-mobile
+ ```
+3. Install NPM packages
    ```sh
    npm install --force
    ```
-3. Launch the app
+4. Launch the app
    ```sh
    expo start
    ```
