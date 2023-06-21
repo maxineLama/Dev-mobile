@@ -9,6 +9,10 @@ const PlanningRepas = () => {
   const { mealPlan, setMealPlan, getInitialMealPlan } = useContext(MealPlanContext);
 
   useEffect(() => {
+    AsyncStorage.setItem('mealPlan', JSON.stringify(mealPlan));
+  }, [mealPlan]);
+  
+  useEffect(() => {
     const loadMealPlan = async () => {
       try {
         const savedMealPlan = await AsyncStorage.getItem('mealPlan');
@@ -22,9 +26,7 @@ const PlanningRepas = () => {
     loadMealPlan();
   }, [setMealPlan]);
 
-  useEffect(() => {
-    AsyncStorage.setItem('mealPlan', JSON.stringify(mealPlan));
-  }, [mealPlan]);
+  
   const handleDeleteFood = (day, meal, food) => {
       setMealPlan((prevMealPlan) => {
         const updatedFoods = prevMealPlan[day][meal].filter((item) => item !== food);
